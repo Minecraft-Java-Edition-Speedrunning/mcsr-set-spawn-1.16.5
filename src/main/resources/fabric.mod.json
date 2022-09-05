@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "setspawnmod",
+  "version": "${version}",
+
+  "name": "Set Spawn Mod",
+  "description": "Sets the player spawnpoint in SSG to specified coordinates.",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/setspawnmod/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.set.spawn.mod.SetSpawn"
+    ]
+  },
+  "mixins": [
+    "setspawnmod.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "~1.16",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
