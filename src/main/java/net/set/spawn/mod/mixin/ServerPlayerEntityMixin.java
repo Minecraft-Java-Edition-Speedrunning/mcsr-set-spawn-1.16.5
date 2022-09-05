@@ -46,7 +46,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     private boolean properSpawnEditingCircumstances(ServerWorld world){
         if (!isWorldLoading()) return false;
         if (!isSetSeed(world)) return false;
-        if (!isValidSyntax()) return false;
+        if (!loadCoordinates()) return false;
         if (!areCoordinatesPossible(world)) return false;
         return true;
     }
@@ -59,7 +59,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
         return String.valueOf(world.getSeed()).equals(SetSpawnProperties.seed);
     }
 
-    private boolean isValidSyntax() {
+    private boolean loadCoordinates() {
         String[] coordinatesStringArray = SetSpawnProperties.coordinates.split(" ");
         if (coordinatesStringArray.length != 3) {
             LOGGER.warn("Coordinates given were in an invalid format. Not overriding player spawnpoint.");
