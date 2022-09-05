@@ -102,7 +102,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     }
 
     @Nullable
-    private static BlockPos findOverworldSpawn(ServerWorld world, int x, int z) {
+    private static BlockPos findOverworldSpawn(ServerWorld world, int x, int z) { // method taken from mc code
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, 0, z);
         Biome biome = world.getBiome(mutable);
         boolean bl = world.getDimension().hasCeiling();
