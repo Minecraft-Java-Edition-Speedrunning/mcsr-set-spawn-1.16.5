@@ -6,6 +6,6 @@ import net.set.spawn.mod.config.SetSpawnProperties;
 public class SetSpawn implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        SetSpawnProperties.init();
+        // do nothing for now
     }
 }
