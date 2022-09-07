@@ -39,16 +39,25 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
             double z = coordinates[2];
             this.refreshPositionAndAngles(new BlockPos(x, y, z), 0.0F, 0.0F);
             Conditionals.isAWorldGenerating = false;
+            LOGGER.info("Overriding player spawnpoint to " + x + " " + y + " " + z);
             ci.cancel();
         }
     }
 
     private boolean properSpawnEditingCircumstances(ServerWorld world){
+        if (!isEnabled()) return false;
         if (!isWorldLoading()) return false;
         if (!isSetSeed(world)) return false;
         if (!loadCoordinates()) return false;
         if (!areCoordinatesPossible(world)) return false;
         return true;
+    }
+
+    private boolean isEnabled() {
+        if (!SetSpawnProperties.enabled) {
+            LOGGER.info("Set Spawn is currently disabled.");
+        }
+        return SetSpawnProperties.enabled;
     }
 
     private boolean isWorldLoading(){
