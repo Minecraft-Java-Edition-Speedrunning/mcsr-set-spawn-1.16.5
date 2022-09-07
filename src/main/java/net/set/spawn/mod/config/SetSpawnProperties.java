@@ -10,6 +10,7 @@ import java.util.Properties;
 public class SetSpawnProperties {
     private static final Logger LOGGER = LogManager.getLogger();
     public static File configFile;
+    public static Boolean enabled;
     public static String seed;
     public static String coordinates;
 
@@ -34,12 +35,14 @@ public class SetSpawnProperties {
     private static void loadProperties() throws IOException {
         Properties properties = new Properties();
         properties.load(new FileInputStream(configFile));
+        enabled = Boolean.valueOf(properties.getProperty("enabled", "true"));
         seed = properties.getProperty("seed", "8398967436125155523");
         coordinates = properties.getProperty("coordinates", "-201.5 72.0 229.5");
     }
     private static void saveProperties() throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(configFile));
         Properties properties = new Properties();
+        properties.put("enabled", Boolean.toString(enabled));
         properties.put("seed", seed);
         properties.put("coordinates", coordinates);
         properties.store(bufferedWriter, "");
@@ -49,6 +52,7 @@ public class SetSpawnProperties {
     private static void saveDefaultProperties() throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(configFile));
         Properties properties = new Properties();
+        properties.put("enabled", "true");
         properties.put("seed", "8398967436125155523");
         properties.put("coordinates", "-201.5 72.0 229.5");
         properties.store(bufferedWriter, "");
