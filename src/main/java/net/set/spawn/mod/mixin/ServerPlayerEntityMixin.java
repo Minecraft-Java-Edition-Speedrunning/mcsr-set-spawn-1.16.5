@@ -33,6 +33,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     }
     @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
     public void setSpawn(ServerWorld world, CallbackInfo ci) {
+        SetSpawnProperties.init();
         if (properSpawnEditingCircumstances(world)) {
             double x = coordinates[0];
             double y = coordinates[1];
