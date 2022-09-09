@@ -18,7 +18,7 @@ public abstract class DebugHudMixin extends DrawableHelper {
     public void displaySetSpawnOnF3(CallbackInfoReturnable<List<String>> cir) {
         List<String> currentF3 = cir.getReturnValue();
         if (Conditionals.isModActive) {
-            currentF3.add("Setting Spawn on seed \"" + SetSpawnProperties.seed + "\" to " + SetSpawnProperties.coordinates);
+            currentF3.add("Spawning in at " + SetSpawnProperties.coordinates);
         }
     }
 

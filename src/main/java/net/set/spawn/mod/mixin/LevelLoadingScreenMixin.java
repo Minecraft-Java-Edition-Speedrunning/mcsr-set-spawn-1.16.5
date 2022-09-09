@@ -20,9 +20,13 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     @Inject(method = "render", at = @At("TAIL"))
     public void displaySetSpawnOnF3(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci){
         SetSpawnProperties.init();
-        String log = "Overriding player spawnpoint to " + SetSpawnProperties.coordinates;
         if (Conditionals.isModActive) {
-            drawCenteredText(matrices, this.textRenderer, log, this.width / 2, 270, 16777215);
+            int fontCenter = this.textRenderer.fontHeight / 2;
+            int horizontalCenter = this.width / 2;
+            int verticalCenter = this.height / 2 - fontCenter;
+            int verticalPlacement = verticalCenter + 90;
+            int white = 16777215;
+            drawCenteredText(matrices, this.textRenderer, SetSpawnProperties.coordinates, horizontalCenter, verticalPlacement, white);
         }
     }
 }
