@@ -8,7 +8,7 @@ public class SetSpawn implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         if (FabricLoader.getInstance().isModLoaded("worldpreview")) {
-            LogManager.getLogger("SetSpawn").error("World Preview is not compatible with Set Spawn. If you wish to use Set Spawn, remove World Preview from your instance's mod folder.");
+            LogManager.getLogger("SetSpawn").error("WorldPreview is not compatible with SetSpawn. If you wish to use SetSpawn, remove WorldPreview from your instance's mod folder.");
             System.exit(1);
         }
     }
