@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(DebugHud.class)
-public class DebugHudMixin extends DrawableHelper {
+public abstract class DebugHudMixin extends DrawableHelper {
 
     @Inject(method = "getRightText", at = @At("RETURN"))
     public void displaySetSpawnOnF3(CallbackInfoReturnable<List<String>> cir) {
         List<String> currentF3 = cir.getReturnValue();
         if (Conditionals.isModActive) {
-            currentF3.add("Setting Spawn on seed " + SetSpawnProperties.seed + " to " + SetSpawnProperties.coordinates);
+            currentF3.add("Setting Spawn on seed \"" + SetSpawnProperties.seed + "\" to " + SetSpawnProperties.coordinates);
         }
     }
 
