@@ -1,14 +1,11 @@
 package net.set.spawn.mod.config;
 
 import net.fabricmc.loader.api.FabricLoader;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Properties;
 
 public class SetSpawnProperties {
-    private static final Logger LOGGER = LogManager.getLogger();
     public static File configFile;
     public static Boolean enabled;
     public static String seed;
