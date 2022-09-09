@@ -34,6 +34,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
     public void setSpawn(ServerWorld world, CallbackInfo ci) {
         SetSpawnProperties.init();
+        Conditionals.isModActive = false;
         if (properSpawnEditingCircumstances(world)) {
             double x = coordinates[0];
             double y = coordinates[1];
@@ -51,6 +52,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
         if (!isSetSeed(world)) return false;
         if (!loadCoordinates()) return false;
         if (!areCoordinatesPossible(world)) return false;
+        Conditionals.isModActive = true;
         return true;
     }
 
