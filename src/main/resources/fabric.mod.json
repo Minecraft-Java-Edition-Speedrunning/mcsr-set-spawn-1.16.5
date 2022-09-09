@@ -31,7 +31,7 @@
     "minecraft": "~1.16",
     "java": ">=17"
   },
-  "suggests": {
-    "another-mod": "*"
+  "breaks": {
+    "worldpreview": "*"
   }
 }
