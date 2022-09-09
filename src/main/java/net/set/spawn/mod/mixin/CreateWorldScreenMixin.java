@@ -17,6 +17,7 @@ public abstract class CreateWorldScreenMixin extends Screen {
     @Inject(method = "createLevel", at = @At("HEAD"))
     public void setGeneratingTrue(CallbackInfo ci) {
         Conditionals.isAWorldGenerating = true;
+        Conditionals.isModActive = false;
     }
 
 }
