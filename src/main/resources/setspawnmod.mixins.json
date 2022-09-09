@@ -12,6 +12,7 @@
   },
   "client": [
     "CreateWorldScreenMixin",
-    "DebugHudMixin"
+    "DebugHudMixin",
+    "LevelLoadingScreenMixin"
   ]
 }

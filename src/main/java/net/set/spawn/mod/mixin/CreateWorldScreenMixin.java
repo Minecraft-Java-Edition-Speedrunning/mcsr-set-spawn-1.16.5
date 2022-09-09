@@ -18,4 +18,5 @@ public abstract class CreateWorldScreenMixin extends Screen {
     public void setGeneratingTrue(CallbackInfo ci) {
         Conditionals.isAWorldGenerating = true;
     }
+
 }
