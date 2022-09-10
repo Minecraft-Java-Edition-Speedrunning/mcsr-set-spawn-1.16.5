@@ -22,7 +22,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     }
     @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
     public void setSpawn(ServerWorld world, CallbackInfo ci) {
-        if (Conditionals.isModActive) {
+        if (Conditionals.isModActive && Conditionals.isAWorldGenerating) {
             String[] coordinates = SetSpawnProperties.coordinates.split(" ");
             double x = Double.parseDouble(coordinates[0]);
             double y = Double.parseDouble(coordinates[1]);
