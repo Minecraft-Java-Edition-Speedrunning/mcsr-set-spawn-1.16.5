@@ -36,7 +36,6 @@ public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<Serve
 
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
     public void validateSpawn(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        
         Conditionals.isModActive = false;
         if (properSpawnEditingCircumstances(this.getOverworld())) {
             Conditionals.isModActive = true;
