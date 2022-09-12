@@ -44,9 +44,13 @@ public class SetSpawn implements ClientModInitializer {
 
         try {
             coordinateX= Double.parseDouble( properties.getProperty("coordinateX", "-201.5"));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("X coordinate was given in an invalid format.");
+        }
+        try {
             coordinateZ= Double.parseDouble( properties.getProperty("coordinateZ", "229.5"));
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Coordinates given were in an invalid format. Not modifying player spawnpoint.");
+            throw new NumberFormatException("Z coordinate was given in an invalid format.");
         }
 
 
