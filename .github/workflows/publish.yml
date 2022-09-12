@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "1.16.5"
+      - "main"
+      - "master"
     paths:
       - src/**
       - build.gradle
