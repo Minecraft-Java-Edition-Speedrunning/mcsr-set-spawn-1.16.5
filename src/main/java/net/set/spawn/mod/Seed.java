@@ -1,9 +1,5 @@
 package net.set.spawn.mod;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Seed {
     private String seed;
     private String seedName;

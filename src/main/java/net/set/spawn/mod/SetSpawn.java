@@ -1,10 +1,12 @@
 package net.set.spawn.mod;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.Objects;
@@ -28,15 +30,13 @@ public class SetSpawn implements ClientModInitializer {
         }
     }
 
-    private static void loadProperties() throws IOException,NumberFormatException {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            config = mapper.readValue(localConfigFile, Config.class);
-            if (config.isUseGlobalConfig()) {
-                config = mapper.readValue(globalConfigFile, Config.class);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static void loadProperties() throws IOException, NumberFormatException, JsonSyntaxException {
+        Gson gson = new Gson();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(localConfigFile));
+        config = gson.fromJson(bufferedReader, Config.class);
+        if (config.isUseGlobalConfig()) {
+            bufferedReader = new BufferedReader(new FileReader(globalConfigFile));
+            config = gson.fromJson(bufferedReader, Config.class);
         }
     }
 
@@ -46,11 +46,11 @@ public class SetSpawn implements ClientModInitializer {
         Seed[] seedsToWrite = new Seed[] { vine, taiga };
         Config config = new Config(true, false, seedsToWrite);
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writerWithDefaultPrettyPrinter().writeValue(file, config);
+        try (Writer writer = new FileWriter(file)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(config, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
