@@ -13,7 +13,9 @@ public abstract class MinecraftServerMixin{
 
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
     public void setspawnmod_startedWorldGen(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
-        SetSpawn.shouldModifySpawn=true;
+        if (SetSpawn.config.isEnabled()) {
+            SetSpawn.shouldModifySpawn = true;
+        }
     }
 }
 

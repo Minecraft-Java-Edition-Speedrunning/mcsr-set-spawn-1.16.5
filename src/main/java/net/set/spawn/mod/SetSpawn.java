@@ -4,29 +4,24 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.io.*;
+import java.util.Objects;
 
 public class SetSpawn implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "setspawnmod";
     public static boolean shouldModifySpawn;
-    public static final String subDir = SetSpawn.MOD_ID + "1_16_5";
-    public static File configFile;
+    public static final String subDir = SetSpawn.MOD_ID + "_global";
+    public static File localConfigFile;
     public static File globalConfigFile;
-    public static boolean use_global_config;
-    public static String seed;
-    public static double coordinateX;
-    public static double coordinateZ;
+    public static Config config;
 
     private static void createIfNonExistent(File file) {
         try {
             if(file.createNewFile()){
-                saveDefaultProperties(file);
+                writeDefaultProperties(file);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,75 +29,56 @@ public class SetSpawn implements ClientModInitializer {
     }
 
     private static void loadProperties() throws IOException,NumberFormatException {
-        Properties properties = getProperties(configFile);
-
-        use_global_config = Boolean.parseBoolean(properties.getProperty("use_global_config", "false"));
-        if (use_global_config) {
-            properties= getProperties(globalConfigFile);
-        }
-        seed = properties.getProperty("seed", "8398967436125155523");
-
         try {
-            coordinateX= Double.parseDouble( properties.getProperty("coordinateX", "-201.5"));
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("X coordinate was given in an invalid format.");
-        }
-        try {
-            coordinateZ= Double.parseDouble( properties.getProperty("coordinateZ", "229.5"));
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("Z coordinate was given in an invalid format.");
-        }
-
-
-    }
-    static Properties getProperties(File file) throws IOException {
-        try(FileInputStream inputStream = new FileInputStream(file)){
-            Properties properties= new Properties();
-            properties.load(inputStream);
-            return properties;
-        }
-    }
-
-    private static void saveProperties(File file) throws IOException {
-        try(FileOutputStream f = new FileOutputStream(file)){
-            Properties properties = new Properties();
-            if (file == configFile) {
-                properties.put("use_global_config", ""+use_global_config);
+            ObjectMapper mapper = new ObjectMapper();
+            config = mapper.readValue(localConfigFile, Config.class);
+            if (config.isUseGlobalConfig()) {
+                config = mapper.readValue(globalConfigFile, Config.class);
             }
-            properties.put("seed", seed);
-            properties.put("coordinateX", ""+coordinateX);
-            properties.put("coordinateZ", ""+coordinateZ);
-            properties.store(f, "");
-        }
-    }
-
-    private static void saveDefaultProperties(File file) throws IOException {
-        try(FileOutputStream f = new FileOutputStream(file)){
-            Properties properties = new Properties();
-            if (file == configFile) {
-                properties.put("use_global_config", "false");
-            }
-            properties.put("seed", "8398967436125155523");
-            properties.put("coordinateX", "-201.5");
-            properties.put("coordinateZ", "229.5");
-            properties.store(f, "");
-        }
-    }
-    @Override
-    public void onInitializeClient() {
-        LOGGER.info("Initializing");
-        File globalDir = new File (System.getProperty("user.home").replace("\\", "/"), subDir);
-        globalDir.mkdirs();
-        globalConfigFile = new File(globalDir, "globalsetspawn.properties");
-        configFile = FabricLoader.getInstance().getConfigDir().resolve("setspawn.properties").toFile();
-        createIfNonExistent(globalConfigFile);
-        createIfNonExistent(configFile);
-        try {
-            loadProperties();
-            saveProperties(configFile);
-            saveProperties(globalConfigFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private static void writeDefaultProperties(File file) throws IOException {
+        Seed vine = new Seed("8398967436125155523", "vine", -201.5, 229.5);
+        Seed taiga = new Seed("2483313382402348964", "taiga", -230.5, 247.5);
+        Seed[] seedsToWrite = new Seed[] { vine, taiga };
+        Config config = new Config(true, false, seedsToWrite);
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writerWithDefaultPrettyPrinter().writeValue(file, config);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onInitializeClient() {
+        LOGGER.info("Initializing");
+        File globalDir = new File(System.getProperty("user.home").replace("\\", "/"), subDir);
+        globalDir.mkdirs();
+        globalConfigFile = new File(globalDir, "setspawn.json");
+        localConfigFile = FabricLoader.getInstance().getConfigDir().resolve("setspawn.json").toFile();
+        createIfNonExistent(globalConfigFile);
+        createIfNonExistent(localConfigFile);
+        try {
+            loadProperties();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Seed findSeedObjectFromLong(long seedLong) {
+        String seed = String.valueOf(seedLong);
+        Seed[] seedObjects = config.getSeeds();
+        for (Seed seedObject : seedObjects) {
+            if (Objects.equals(seedObject.getSeed(), seed)) {
+                return seedObject;
+            }
+        }
+        return null;
+    }
+
 }
