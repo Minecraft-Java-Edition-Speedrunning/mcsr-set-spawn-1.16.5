@@ -1,5 +1,6 @@
 package net.set.spawn.mod;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -47,7 +48,10 @@ public class SetSpawn implements ClientModInitializer {
         Config config = new Config(true, false, seedsToWrite);
 
         try (Writer writer = new FileWriter(file)) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .create();
             gson.toJson(config, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
