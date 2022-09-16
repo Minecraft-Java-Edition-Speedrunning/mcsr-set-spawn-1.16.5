@@ -43,8 +43,13 @@ public class SetSpawn implements ClientModInitializer {
 
     private static void writeDefaultProperties(File file) throws IOException {
         Seed vine = new Seed("8398967436125155523", "vine", -201.5, 229.5);
-        Seed taiga = new Seed("2483313382402348964", "taiga", -230.5, 247.5);
-        Seed[] seedsToWrite = new Seed[] { vine, taiga };
+        Seed taiga = new Seed("2483313382402348964", "taiga", -233.5, 249.5);
+        Seed gravel = new Seed("-3294725893620991126", "gravel", 161.5, 194.5);
+        Seed dolphin = new Seed("-4530634556500121041", "dolphin", 174.5, 201.5);
+        Seed rng = new Seed("-4810268054211229692", "rng", -153.5, 233.5);
+        Seed arch = new Seed("2613428371297940758", "arch", 154.5, -217.5);
+        Seed fletcher = new Seed("2478133068685386821", "fletcher", -249.5, 105.5);
+        Seed[] seedsToWrite = new Seed[] { vine, taiga, gravel, dolphin, rng, arch, fletcher };
         Config config = new Config(true, false, seedsToWrite);
 
         try (Writer writer = new FileWriter(file)) {
