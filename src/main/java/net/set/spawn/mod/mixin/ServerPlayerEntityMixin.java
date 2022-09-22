@@ -37,16 +37,21 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
                 int zFloor = MathHelper.floor(seedObject.getZ());
                 if ((Math.abs(xFloor - world.getSpawnPos().getX()) > this.server.getSpawnRadius(world))
                         || (Math.abs(zFloor - world.getSpawnPos().getZ()) > this.server.getSpawnRadius(world))) {
-                    response = "The X or Z coordinates given are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
+                    SetSpawn.shouldSendErrorMessage = true;
+                    response = "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
+                    SetSpawn.errorMessage = response;
                     SetSpawn.LOGGER.warn(response);
                 } else {
                     BlockPos spawnPos = SpawnLocatingAccessor.callFindOverworldSpawn(world, xFloor, zFloor, false);
                     if (spawnPos != null) {
+                        SetSpawn.shouldSendErrorMessage = false;
                         SetSpawn.LOGGER.info("Spawning player at: " + seedObject.getX() + " " + spawnPos.getY() + " " + seedObject.getZ());
                         this.refreshPositionAndAngles(spawnPos, 0.0F, 0.0F);
                         ci.cancel();
                     } else {
-                        response = "There is no valid spawning location at the specified coordinates. Not overriding player spawnpoint.";
+                        SetSpawn.shouldSendErrorMessage = true;
+                        response = "There is no valid spawning location at the specified coordinates (" + seedObject.getX() + ", " + seedObject.getZ() + "). Not overriding player spawnpoint.";
+                        SetSpawn.errorMessage = response;
                         SetSpawn.LOGGER.warn(response);
                     }
                 }

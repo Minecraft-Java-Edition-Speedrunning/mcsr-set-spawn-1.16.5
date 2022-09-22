@@ -16,6 +16,8 @@ public class SetSpawn implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "setspawnmod";
     public static boolean shouldModifySpawn;
+    public static boolean shouldSendErrorMessage;
+    public static String errorMessage;
     public static final String subDir = SetSpawn.MOD_ID + "_global";
     public static File localConfigFile;
     public static File globalConfigFile;
