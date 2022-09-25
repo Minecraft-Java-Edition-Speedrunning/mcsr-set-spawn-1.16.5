@@ -6,11 +6,6 @@ on:
       - "1.16.5"
       - "main"
       - "master"
-    paths:
-      - src/**
-      - build.gradle
-      - gradle.properties
-      - settings.gradle
   workflow_dispatch:
 
 jobs:
