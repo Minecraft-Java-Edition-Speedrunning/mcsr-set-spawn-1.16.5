@@ -44,10 +44,17 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
                 } else {
                     BlockPos spawnPos = SpawnLocatingAccessor.callFindOverworldSpawn(world, xFloor, zFloor, false);
                     if (spawnPos != null) {
-                        SetSpawn.shouldSendErrorMessage = false;
-                        SetSpawn.LOGGER.info("Spawning player at: " + seedObject.getX() + " " + spawnPos.getY() + " " + seedObject.getZ());
                         this.refreshPositionAndAngles(spawnPos, 0.0F, 0.0F);
-                        ci.cancel();
+                        if (world.isSpaceEmpty(this)) {
+                            SetSpawn.shouldSendErrorMessage = false;
+                            SetSpawn.LOGGER.info("Spawning player at: " + seedObject.getX() + " " + spawnPos.getY() + " " + seedObject.getZ());
+                            ci.cancel();
+                        } else {
+                            SetSpawn.shouldSendErrorMessage = true;
+                            response = "The coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are obstructed by blocks. Not overriding player spawnpoint.";
+                            SetSpawn.errorMessage = response;
+                            SetSpawn.LOGGER.warn(response);
+                        }
                     } else {
                         SetSpawn.shouldSendErrorMessage = true;
                         response = "There is no valid spawning location at the specified coordinates (" + seedObject.getX() + ", " + seedObject.getZ() + "). Not overriding player spawnpoint.";
