@@ -6,9 +6,12 @@
   "name": "Set Spawn 1.16.5",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
-    "bdamja"
+    "bdamja",
+    "Void_X_Walker",
+    "jan-leila",
+    "RedLime"
   ],
-  "license": "CC0-1.0",
+  "license": "LGPL-3.0-only",
   "icon": "assets/setspawnmod/icon.png",
 
   "environment": "*",
